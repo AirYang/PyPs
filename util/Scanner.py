@@ -11,7 +11,7 @@ class Scanner(object):
         if ports is None:
             ports = [x for x in range(1, 65536)]
 
-        print "--- Tcp Connect Scanning %s ---" % hostIp
+        print "--- Scanning %s ---" % hostIp
         threads = []
         chunkSize = len(ports) // self.works
         for i in range(0, self.works):
@@ -23,7 +23,7 @@ class Scanner(object):
             t.start()
         for th in threads:
             th.join()
-        print "--- Tcp Connect Scanning End ---"
+        print "--- Scanning End ---"
 
     def _scanSingleHostDo(self, hostIp, ports=None):
         for port in ports:
