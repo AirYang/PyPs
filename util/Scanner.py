@@ -2,7 +2,8 @@ import threading
 
 
 class Scanner(object):
-    def __init__(self, works=4, timeout=0.5):
+    def __init__(self, desc="--- Scanning %s ---", works=4, timeout=0.5):
+        self.desc = desc
         self.works = works
         self.timeout = timeout
         self.printMutex = threading.Lock()
@@ -11,7 +12,7 @@ class Scanner(object):
         if ports is None:
             ports = [x for x in range(1, 65536)]
 
-        print "--- Scanning %s ---" % hostIp
+        print self.desc % hostIp
         threads = []
         chunkSize = len(ports) // self.works
         for i in range(0, self.works):
@@ -23,7 +24,7 @@ class Scanner(object):
             t.start()
         for th in threads:
             th.join()
-        print "--- Scanning End ---"
+        # print "--- Scanning End ---"
 
     def _scanSingleHostDo(self, hostIp, ports=None):
         for port in ports:

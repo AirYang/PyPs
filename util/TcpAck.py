@@ -6,10 +6,11 @@ import Scanner
 import NetworkHelp
 
 
-class TcpFin(Scanner.Scanner):
+class TcpAck(Scanner.Scanner):
 
     def _scanPort(self, hostIp, port):
-
+        # s = None
+        # print "test0"
         try:
             s = NetworkHelp.createTcpRawSocket()
             s.settimeout(self.timeout)
@@ -51,14 +52,14 @@ class TcpFin(Scanner.Scanner):
             # tcpSourcePort = int(random.uniform(10000, 60000))
             # tcpDestPort = port
             # tcpSeqNum = 1
-            # tcpAckNum = 0
+            # tcpAckNum = 1
             # tcpDataOff = 5
             # tcpUrg = 0
-            # tcpAck = 0
+            # tcpAck = 1
             # tcpPsh = 0
             # tcpRst = 0
             # tcpSyn = 0
-            # tcpFin = 1
+            # tcpFin = 0
             # tcpWinSize = 1024
             # tcpCheckSum = 0
             # tcpUrgPtr = 0
@@ -78,7 +79,7 @@ class TcpFin(Scanner.Scanner):
 
             # print "test5"
             tcpHeader = NetworkHelp.getTcpHeader(urg=0,
-                                                 ack=0, psh=0, rst=0, syn=0, fin=1, sourceIp=sourceIp, destIp=destIp, destPort=port,
+                                                 ack=1, psh=0, rst=0, syn=0, fin=0, sourceIp=sourceIp, destIp=destIp, destPort=port,
                                                  seqnum=1,
                                                  acknum=0)
 
@@ -100,12 +101,13 @@ class TcpFin(Scanner.Scanner):
                         '!H', recvData[20:22])[0]
 
                     recvFlags = struct.unpack('!B', recvData[33:34])[0]
+                    # print recvSourcePort, recvFlags
                     # print recvFlags
                     # recvRst = (recvFlags & int('00000100', 2)) != 0
-                    # port and rst ack
-                    if (recvSourcePort == port) and (recvFlags == 20):
+                    # port and rst
+                    if (recvSourcePort == port) and (recvFlags == 4):
                         self.printMutex.acquire()
-                        print "[%d] recv ack rst" % port
+                        print "[%d] recv rst" % port
                         self.printMutex.release()
                         # print "ip port"
                         break
@@ -114,8 +116,9 @@ class TcpFin(Scanner.Scanner):
 
         except:
             self.printMutex.acquire()
-            print "[%d] not recv ack rst" % port
+            print "[%d] not recv rst" % port
             self.printMutex.release()
         finally:
             # pass
-            s.close()
+            if s != None:
+                s.close()

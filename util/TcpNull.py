@@ -6,7 +6,7 @@ import Scanner
 import NetworkHelp
 
 
-class TcpFin(Scanner.Scanner):
+class TcpNull(Scanner.Scanner):
 
     def _scanPort(self, hostIp, port):
 
@@ -58,7 +58,7 @@ class TcpFin(Scanner.Scanner):
             # tcpPsh = 0
             # tcpRst = 0
             # tcpSyn = 0
-            # tcpFin = 1
+            # tcpFin = 0
             # tcpWinSize = 1024
             # tcpCheckSum = 0
             # tcpUrgPtr = 0
@@ -78,7 +78,7 @@ class TcpFin(Scanner.Scanner):
 
             # print "test5"
             tcpHeader = NetworkHelp.getTcpHeader(urg=0,
-                                                 ack=0, psh=0, rst=0, syn=0, fin=1, sourceIp=sourceIp, destIp=destIp, destPort=port,
+                                                 ack=0, psh=0, rst=0, syn=0, fin=0, sourceIp=sourceIp, destIp=destIp, destPort=port,
                                                  seqnum=1,
                                                  acknum=0)
 
@@ -100,6 +100,7 @@ class TcpFin(Scanner.Scanner):
                         '!H', recvData[20:22])[0]
 
                     recvFlags = struct.unpack('!B', recvData[33:34])[0]
+                    # print recvSourcePort, recvFlags
                     # print recvFlags
                     # recvRst = (recvFlags & int('00000100', 2)) != 0
                     # port and rst ack

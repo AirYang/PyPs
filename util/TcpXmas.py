@@ -6,7 +6,7 @@ import Scanner
 import NetworkHelp
 
 
-class TcpFin(Scanner.Scanner):
+class TcpXmas(Scanner.Scanner):
 
     def _scanPort(self, hostIp, port):
 
@@ -41,7 +41,6 @@ class TcpFin(Scanner.Scanner):
 
             ipHeader = NetworkHelp.getIpHeader(
                 sourceIp=sourceIp, destIp=destIp)
-
             # struct.pack(
             #     '!BBHHHBBH4s4s', (ipVersion << 4) + ipHLength, ipService, ipTotalLength, ipId,  (ipFlags << 13) + ipFragOff, ipTtl, ipProtocol, ipCheckSum, ipSourceIp, ipDestIp)
 
@@ -53,9 +52,9 @@ class TcpFin(Scanner.Scanner):
             # tcpSeqNum = 1
             # tcpAckNum = 0
             # tcpDataOff = 5
-            # tcpUrg = 0
+            # tcpUrg = 1
             # tcpAck = 0
-            # tcpPsh = 0
+            # tcpPsh = 1
             # tcpRst = 0
             # tcpSyn = 0
             # tcpFin = 1
@@ -77,11 +76,10 @@ class TcpFin(Scanner.Scanner):
             # tcpCheckSum = NetworkHelp.checksum(tcpPreHeader + tcpHeader)
 
             # print "test5"
-            tcpHeader = NetworkHelp.getTcpHeader(urg=0,
-                                                 ack=0, psh=0, rst=0, syn=0, fin=1, sourceIp=sourceIp, destIp=destIp, destPort=port,
+            tcpHeader = NetworkHelp.getTcpHeader(urg=1,
+                                                 ack=0, psh=1, rst=0, syn=0, fin=1, sourceIp=sourceIp, destIp=destIp, destPort=port,
                                                  seqnum=1,
                                                  acknum=0)
-
             # struct.pack(
             #     "!HHLLBBHHH", tcpSourcePort, tcpDestPort, tcpSeqNum, tcpAckNum, tcpDataOffAndRes, tcpFlags, tcpWinSize, tcpCheckSum, tcpUrgPtr)
 
@@ -100,6 +98,7 @@ class TcpFin(Scanner.Scanner):
                         '!H', recvData[20:22])[0]
 
                     recvFlags = struct.unpack('!B', recvData[33:34])[0]
+                    # print recvSourcePort, recvFlags
                     # print recvFlags
                     # recvRst = (recvFlags & int('00000100', 2)) != 0
                     # port and rst ack
