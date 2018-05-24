@@ -101,13 +101,15 @@ class TcpAck(Scanner.Scanner):
                         '!H', recvData[20:22])[0]
 
                     recvFlags = struct.unpack('!B', recvData[33:34])[0]
+                    windowSize = struct.unpack('!H', recvData[34:36])[0]
                     # print recvSourcePort, recvFlags
                     # print recvFlags
                     # recvRst = (recvFlags & int('00000100', 2)) != 0
                     # port and rst
                     if (recvSourcePort == port) and (recvFlags == 4):
                         self.printMutex.acquire()
-                        print "[%d] recv rst" % port
+                        print "[%d] recv rst win size [%d]" % (
+                            port, windowSize)
                         self.printMutex.release()
                         # print "ip port"
                         break

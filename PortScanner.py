@@ -34,8 +34,8 @@ if __name__ == '__main__':
     # tcpSyn.scanSingleHost(sys.argv[1], [x for x in range(minPort, maxPort+1)])
 
     # test 117.34.105.104
-    udpScan = UdpScan(desc="--- Udp Scan %s ---", works=1, timeout=1.0)
-    udpScan.scanSingleHost(sys.argv[1], [x for x in range(minPort, maxPort+1)])
+    # udpScan = UdpScan(desc="--- Udp Scan %s ---", works=1, timeout=1.0)
+    # udpScan.scanSingleHost(sys.argv[1], [x for x in range(minPort, maxPort+1)])
 
     # test 192.168.0.242
     # test 221.231.138.56
@@ -49,5 +49,5 @@ if __name__ == '__main__':
     # tcpXmas = TcpXmas(desc="--- Tcp Xmas %s ---", works=4, timeout=0.5)
     # tcpXmas.scanSingleHost(sys.argv[1], [x for x in range(minPort, maxPort+1)])
 
-    # tcpAck = TcpAck(desc="--- Tcp Ack %s ---", works=4, timeout=0.5)
-    # tcpAck.scanSingleHost(sys.argv[1], [x for x in range(minPort, maxPort+1)])
+    tcpAck = TcpAck(desc="--- Tcp Ack Win %s ---", works=4, timeout=0.5)
+    tcpAck.scanSingleHost(sys.argv[1], [x for x in range(minPort, maxPort+1)])
