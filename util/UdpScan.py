@@ -38,7 +38,7 @@ class UdpScan(Scanner.Scanner):
                         break
 
             self.printMutex.acquire()
-            print "[%d] recv icmp destip unreachable destport unreachable" % port
+            print "[%d] recv icmp ip unreach port unreach" % port
             self.printMutex.release()
         except:
             self.printMutex.acquire()

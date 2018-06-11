@@ -13,7 +13,7 @@ class TcpSyn(Scanner.Scanner):
             s = NetworkHelp.createTcpRawSocket()
             s.settimeout(self.timeout)
 
-            packet = ''
+            # packet = ''
             sourceIp = NetworkHelp.getHostIp()
             destIp = hostIp
 
@@ -120,6 +120,16 @@ class TcpSyn(Scanner.Scanner):
                     syn = ((flags & int('00000010', 2)) != 0)
                     ack = ((flags & int('00010000', 2)) != 0)
                     if syn and ack:
+                        self.printMutex.acquire()
+                        print "[%d] recv syn ack" % port
+                        self.printMutex.release()
+                        break
+
+                    recvRst = (flags & int('00000100', 2)) != 0
+                    if recvRst:
+                        self.printMutex.acquire()
+                        print "[%d] recv rst" % port
+                        self.printMutex.release()
                         break
 
                     # if ((flags & int('00000010', 2)) != 0) and ((flags & int('00010000', 2)) != 0):
@@ -127,13 +137,9 @@ class TcpSyn(Scanner.Scanner):
                     #         destination_port, source)
                     #     break
 
-            self.printMutex.acquire()
-            print "[%d] recv syn ack" % port
-            self.printMutex.release()
-
         except:
             self.printMutex.acquire()
-            print "[%d] not recv syn ack" % port
+            print "[%d] not recv" % port
             self.printMutex.release()
         finally:
             s.close()

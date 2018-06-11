@@ -105,9 +105,9 @@ class TcpMaimon(Scanner.Scanner):
 
                     # print recvFlags
                     # print recvFlags
-                    # recvRst = (recvFlags & int('00000100', 2)) != 0
+                    recvRst = (recvFlags & int('00000100', 2)) != 0
                     # port and rst ack
-                    if (recvSourcePort == port) and (recvFlags == 4):
+                    if (recvSourcePort == port) and (recvRst):
                         self.printMutex.acquire()
                         print "[%d] recv rst" % port
                         self.printMutex.release()
@@ -118,7 +118,7 @@ class TcpMaimon(Scanner.Scanner):
 
         except:
             self.printMutex.acquire()
-            print "[%d] not recv rst" % port
+            print "[%d] not recv" % port
             self.printMutex.release()
         finally:
             # pass

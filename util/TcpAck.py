@@ -118,7 +118,7 @@ class TcpAck(Scanner.Scanner):
 
         except:
             self.printMutex.acquire()
-            print "[%d] not recv rst" % port
+            print "[%d] not recv" % port
             self.printMutex.release()
         finally:
             # pass

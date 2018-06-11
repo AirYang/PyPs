@@ -102,11 +102,11 @@ class TcpNull(Scanner.Scanner):
                     recvFlags = struct.unpack('!B', recvData[33:34])[0]
                     # print recvSourcePort, recvFlags
                     # print recvFlags
-                    # recvRst = (recvFlags & int('00000100', 2)) != 0
+                    recvRst = (recvFlags & int('00000100', 2)) != 0
                     # port and rst ack
-                    if (recvSourcePort == port) and (recvFlags == 20):
+                    if (recvSourcePort == port) and (recvRst):
                         self.printMutex.acquire()
-                        print "[%d] recv ack rst" % port
+                        print "[%d] recv rst" % port
                         self.printMutex.release()
                         # print "ip port"
                         break
@@ -115,7 +115,7 @@ class TcpNull(Scanner.Scanner):
 
         except:
             self.printMutex.acquire()
-            print "[%d] not recv ack rst" % port
+            print "[%d] not recv" % port
             self.printMutex.release()
         finally:
             # pass
